@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.asuven.afterspring.mapper.menuAndStatusMapper">
+
+<!--    删除int DeleteMenuAndStatus(@Param("statusId") Integer statusId);-->
+    <delete id="DeleteMenuAndStatus">
+        delete from menu_status_table where status_id=#{statusId}
+    </delete>
+
+<!--    添加int AddMenuAndStatus(menuAndStatusEntity menuAndStatusEntity);-->
+    <insert id="AddMenuAndStatus">
+        insert into menu_status_table (status_id,menu_id)values (#{statusId},#{menuId})
+    </insert>
+
+<!--    通过Id获取List<menuAndStatusEntity> ByIdMenuAndStatus(@Param("statusId") Integer statusId);-->
+    <select id="ByIdMenuAndStatus" resultType="Integer">
+        select menu_id from menu_status_table where status_id=#{statusId}
+    </select>
+</mapper>

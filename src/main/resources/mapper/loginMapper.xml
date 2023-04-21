@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.asuven.afterspring.mapper.loginMapper">
+
+<!--    查询当前用户的菜单List<menuEmpty> GetMenu(loginEmpty loginEmpty);-->
+    <select id="GetMenu" resultType="com.asuven.afterspring.entity.menuEmpty">
+        SELECT *
+        FROM menu_table
+        WHERE menu_id in(
+            SELECT menu_id
+            FROM menu_status_table
+            WHERE status_id = (
+                SELECT s.status_id
+                FROM login_table l LEFT JOIN status_table s
+                                             ON l.login_status = s.`status`
+                WHERE l.login_name=#{loginName}
+            )
+        )
+    </select>
+
+<!--    查询用户名是否存在loginEmpty NameLogin(@Param("loginName") String loginName);-->
+    <select id="NameLogin" resultType="com.asuven.afterspring.entity.loginEmpty">
+        select login_name from login_table where login_name=#{loginName}
+    </select>
+
+<!--    网站用户注册void RegisterTo(String loginName, String loginPassword);-->
+    <insert id="RegisterTo">
+        insert into login_table values (#{loginId},#{loginName},#{loginPassword},'用户',sysdate(0))
+    </insert>
+
+<!--    网站用户登录List<loginEmpty> LoginTo(loginEmpty loginEmpty);-->
+    <select id="LoginTo" resultType="com.asuven.afterspring.entity.loginEmpty">
+        select * from login_table where login_name=#{loginName} and login_password=#{loginPassword}
+    </select>
+
+<!--    查询所有登录用户List<loginEmpty> AllLogin();-->
+    <select id="AllLogin" resultType="com.asuven.afterspring.entity.loginEmpty">
+        select  * from login_table
+    </select>
+
+<!--    查询总记录条数List<loginEmpty> AllLoginCount();-->
+    <select id="AllLoginCount" resultType="Integer">
+        select count(login_id) from login_table where login_name like '%${loginName}%'
+    </select>
+
+<!--    分页查询List<loginEmpty> AllLoginPaging(Integer pageNum,Integer pageSize);-->
+    <select id="AllLoginPaging" resultType="com.asuven.afterspring.entity.loginEmpty">
+        select  * from login_table
+            where login_name like '%${loginName}%'
+            limit ${pageNum},${pageSize}
+    </select>
+
+<!--    根据Id查询网站用户loginEmpty IdLogin(@Param("loginId") Integer loginId);-->
+    <select id="IdLogin" resultType="com.asuven.afterspring.entity.loginEmpty">
+        select  * from login_table WHERE login_Id = #{loginId}
+    </select>
+
+<!--    添加网站用户int AddLogin(loginEmpty loginEmpty);-->
+    <insert id="AddLogin">
+        insert into login_table (login_id,login_name,login_password,login_status,login_date)
+        values (#{loginId},#{loginName},#{loginPassword},#{loginStatus},sysdate(0))
+    </insert>
+
+<!--    修改网站用户int UpdateLogin(loginEmpty loginEmpty);-->
+    <update id="UpdateLogin">
+        update login_table
+        <set>
+            <if test="loginName != null">login_name=#{loginName},</if>
+            <if test="loginPassword != null">login_password=#{loginPassword},</if>
+            <if test="loginStatus != null">login_status=#{loginStatus},login_date=#{loginDate}</if>
+        </set>
+        where login_id=#{loginId}
+    </update>
+
+<!--    删除网站用户loginEmpty DeleteLogin(@Param("loginId") Integer loginId);-->
+    <delete id="DeleteLogin">
+        delete from login_table where login_id=#{loginId}
+    </delete>
+</mapper>

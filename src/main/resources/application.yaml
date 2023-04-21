@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    username: root
+    password: 'mysql8'
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/after_spring?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+  servlet:
+    # 配置文件上传和请求大小
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 500MB
+#  mvc:
+#    # 配置可以接受delete请求，用户表可以，第二个表不可以，很莫名奇妙
+#    hiddenmethod:
+#      filter:
+#        enabled: true
+server:
+  port: 9090
+
+# 配置mybatis规则
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true # 开启驼峰
+
+# 配置文件上传路径
+files:
+  upload:
+    path: D:/ProjectCode/SpringbootAndVue/files/

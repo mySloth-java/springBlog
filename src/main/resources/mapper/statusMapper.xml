@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.asuven.afterspring.mapper.statusMapper">
+
+<!--    身份查询List<statusEmpty> AllStatus();-->
+    <select id="AllStatus" resultType="com.asuven.afterspring.entity.statusEmpty">
+        select * from status_table
+    </select>
+
+<!--    添加身份int AddStatus(statusEmpty statusEmpty);-->
+    <insert id="AddStatus">
+        insert into status_table (status_id,status) values (#{statusId},#{status})
+    </insert>
+
+<!--    删除身份int DelStatus(@Param("statusId") Integer statusId);-->
+    <delete id="DelStatus">
+        delete from status_table where status_id=#{statusId}
+    </delete>
+</mapper>

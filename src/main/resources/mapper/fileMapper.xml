@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.asuven.afterspring.mapper.fileMapper">
+
+<!--    删除文件Integer DeleteFile(@Param("fileId") Integer fileId);-->
+    <delete id="DeleteFile">
+        delete from file_table where file_id=#{fileId}
+    </delete>
+
+<!--    添加文件int AddFile(fileEmpty fileEmpty);-->
+    <insert id="AddFile">
+        insert into file_table
+            (file_name,file_type,file_size,file_url)
+        values (#{fileName},#{fileType},#{fileSize},#{fileUrl})
+    </insert>
+
+<!--    分页查询文件List<loginEmpty> AllFilePaging(Integer pageNum, Integer pageSize, String fileName);-->
+    <select id="AllFilePaging" resultType="com.asuven.afterspring.entity.fileEmpty">
+        select * from file_table
+            where file_name like '%${fileName}%'
+            limit ${pageNum},${pageSize}
+    </select>
+
+<!--    查询文件总条数Integer AllFileCount(String fileName);-->
+    <select id="AllFileCount" resultType="Integer">
+        select count(file_id) from file_table where file_name LIKE '%${fileName}%'
+    </select>
+
+</mapper>
